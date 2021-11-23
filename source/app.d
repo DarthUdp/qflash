@@ -32,7 +32,7 @@ int main(string[] args)
 	}
 
 	if (exists("deny.cfg"))
-		denyList = new ConfigList(readText("deny.cfg"), 8);
+		denyList = new ConfigList(readText("deny.cfg"));
 
 	// if one of these options is present we ignore the input file
 	if (!zfill && !rfill)
