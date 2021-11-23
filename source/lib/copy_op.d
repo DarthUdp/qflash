@@ -1,5 +1,5 @@
 module lib.copy_op;
-import std.file;
+import std.stdio;
 
 /// Copy n bytes from in to out bytewise
 class CopyOp
@@ -14,5 +14,5 @@ class CopyOp
 		this.n = n;
 	}
 
-	
+
 }
