@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/rapid_flash_d
+rapid_flash_d.so
+rapid_flash_d.dylib
+rapid_flash_d.dll
+rapid_flash_d.a
+rapid_flash_d.lib
+rapid_flash_d-test-*
+*.exe
+*.o
+*.obj
+*.lst
