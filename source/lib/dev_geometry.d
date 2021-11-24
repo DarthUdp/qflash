@@ -49,11 +49,11 @@ class DevGeometry
 			and is readable or writeable (based on mode) 
 			and let any exception bubble */
 			isFile(devPath);
-			this.fp = File(devPath, mode == DevGeometryMode.write ? "wb" : "rb");
-			this.fd = this.fp.fileno();
+			fp = File(devPath, mode == DevGeometryMode.write ? "wb" : "rb");
+			fd = fp.fileno();
 			// Normal init after it
-			this.devPath = devPath;
-			this.getDevSize();
+			devPath = devPath;
+			getDevSize();
 		}
 
 		private void getDevSize()
@@ -61,19 +61,19 @@ class DevGeometry
 			/* figuring out dev type, we need to get the results of `stat`
 			and then figure if it's a char dev (i.e /dev/zero) or
 			a block dev (i.e /dev/sda) */
-			auto entry = DirEntry(this.devPath);
+			auto entry = DirEntry(devPath);
 			auto statResult = entry.statBuf();
 			ulong devSz = 0;
 			if (S_ISBLK(statResult.st_mode))
 			{
-				this.type = DevType.blk_dev;
+				type = DevType.blk_dev;
 				// c style error check with -1
 				if (ioctl(fd, BLKGETSIZE64, &devSz) == -1)
 					throw new DevOpException("ioctl(BLKGETSIZE64) failed", this
 							.devPath);
 
 				// the ioctl is assumed to have succeeded
-				this.devSize = devSz;
+				devSize = devSz;
 			}
 		}
 	}
