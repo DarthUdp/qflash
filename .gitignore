@@ -2,13 +2,13 @@
 docs.json
 __dummy.html
 docs/
-/qflash
 qflash.so
 qflash.dylib
 qflash.dll
 qflash.a
 qflash.lib
 qflash-test-*
+qflash
 *.exe
 *.o
 *.obj
