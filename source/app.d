@@ -26,7 +26,7 @@ int main(string[] args)
 
 	if (optHelp.helpWanted)
 	{
-		defaultGetoptPrinter("qflash: Rapid flashing utility\nCopyright (c) 2021 Matheus Xavier",
+		defaultGetoptPrinter("qFlash: Quick flashing utility\nCopyright (c) 2021 Matheus Xavier",
 			optHelp.options);
 		return 0;
 	}
