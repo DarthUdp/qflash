@@ -54,7 +54,7 @@ class CopyOp
 	TargetInfo inFile;
 	TargetInfo outFile;
 	size_t length;
-	this(string inPath, string outPath, size_t maxLength = 0, bool createOut = true)
+	this(string inPath, string outPath, uint bs = 4096, size_t maxLength = 0, bool createOut = true)
 	{
 		// We need to figure out what we are dealing with and act accordingly here
 		final switch (figureFileType(inPath))
@@ -66,6 +66,7 @@ class CopyOp
 			inFile = TargetInfo(FileType.dev, File.init, new DevGeometry(inPath, DevGeometryMode.read));
 			break;
 		case FileType.dir:
+		// We can't handle directories
 			throw new Exception("");
 		}
 
@@ -73,6 +74,7 @@ class CopyOp
 		{
 			std.file.write(outPath, []);
 		}
+		// Same as above but for the output
 		final switch (figureFileType(outPath))
 		{
 		case FileType.reg:
@@ -84,6 +86,20 @@ class CopyOp
 		case FileType.dir:
 			throw new Exception("");
 		}
+		// Refuse to write if the input is longer than the output and the output is a dev
+		if (outFile.type == FileType.dev && inFile.targetSize > outFile.targetSize)
+			throw new Exception("The input is larger than the output");
 		length = maxLength > 0 ? maxLength : outFile.targetSize;
+	}
+	
+	/// Execute the copy operation proper, the behaviour of this procedure
+	/// can be fine-tuned by the flags passed as parameters.
+	/// Params:
+	///   true = 
+	/// Returns: 
+	/// Authors: 
+	ulong copy(uint blockSize = 4096 , bool sync = true, bool checkTransfers = true)
+	{
+
 	}
 }
