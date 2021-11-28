@@ -1,6 +1,8 @@
 import std.stdio;
 import std.getopt;
 import std.file;
+import core.thread.fiber;
+import core.time;
 
 import lib.dev_geometry;
 import lib.list_parser;
@@ -59,7 +61,25 @@ int main(string[] args)
 			writefln("File %s does not exist", inFile);
 			return 1;
 		}
-		auto copyOp = new CopyOp(inFile, outFile, maxTransf);
+		if (!quiet)
+		{
+			auto copyOp = new CopyOp(inFile, outFile, maxTransf);
+			auto th = new Fiber({ copyOp.copyAsync(); });
+			th.call();
+			do
+			{
+				writef("Wrote %d of %d blocks\r", copyOp.currentBlock, copyOp.blkCt);
+				th.call();
+			}
+			while (copyOp.inProgress);
+		}
+		else
+		{
+			auto copyOp = new CopyOp(inFile, outFile, maxTransf);
+			copyOp.copy();
+		}
+
+		writeln("Done!");
 	}
 
 	return 0;

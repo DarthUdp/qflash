@@ -37,8 +37,9 @@ class DevGeometry
 	version (linux)
 	{
 		import core.sys.posix.sys.ioctl;
-		import core.sys.linux.fs;
 		import core.sys.posix.sys.stat;
+		import core.sys.linux.unistd;
+		import core.sys.linux.fs;
 
 		int fd;
 		File fp;
@@ -52,7 +53,7 @@ class DevGeometry
 			fp = File(devPath, mode == DevGeometryMode.write ? "wb" : "rb");
 			fd = fp.fileno();
 			// Normal init after it
-			devPath = devPath;
+			this.devPath = devPath;
 			getDevSize();
 		}
 
@@ -61,7 +62,16 @@ class DevGeometry
 			/* figuring out dev type, we need to get the results of `stat`
 			and then figure if it's a char dev (i.e /dev/zero) or
 			a block dev (i.e /dev/sda) */
-			auto entry = DirEntry(devPath);
+			DirEntry entry = DirEntry.init;
+			try
+			{
+				entry = DirEntry(devPath);
+			}
+			catch (FileException e)
+			{
+				writefln("Error stating %s with error %s", devPath, e);
+				throw e;
+			}
 			auto statResult = entry.statBuf();
 			ulong devSz = 0;
 			if (S_ISBLK(statResult.st_mode))
@@ -75,6 +85,12 @@ class DevGeometry
 				// the ioctl is assumed to have succeeded
 				devSize = devSz;
 			}
+		}
+
+		void devSync()
+		{
+			fsync(fd);
+			return;
 		}
 	}
 
