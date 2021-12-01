@@ -5,7 +5,7 @@ import core.thread.fiber;
 import core.time;
 
 import lib.dev_geometry;
-import lib.list_parser;
+import parsing.list_parser;
 import lib.copy_op;
 
 int main(string[] args)

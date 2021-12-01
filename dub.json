@@ -3,6 +3,9 @@
 		"mxavier"
 	],
 	"copyright": "Copyright © 2021, mxavier",
+	"dependencies": {
+		"darthlib": "~>1.0.0"
+	},
 	"description": "Fast disk image flashing utility",
 	"license": "BSD 3-Clause",
 	"name": "qflash"
